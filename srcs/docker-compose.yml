@@ -1,0 +1,42 @@
+version: '3' #version de docker-compose
+
+services:
+  mariadb:
+    build:
+      context: ./mariadb #path to a directory containing a dockerfile
+    volumes:
+      -/home/cassassi/data/mariadb
+    environment: #.env
+      MYSQL_ROOT_PASSWORD: $(MYSQL_ROOT_PASSWORD)
+      MYSQL_DATABASE: $(MYSQL_DATABASE)
+      MYSQL_USER: $(MYSQL_USER)
+      MYSQL_PASSWORD: $(MYSQL_PASSWORD)
+    restart: always #la norme pour un server web a priori
+  
+  
+  wordpress:
+    build:
+      context: ./wordpress
+    volumes:
+      - /home/cassassi/data/wordpress
+    depends_on:
+      - mariadb
+    environment:
+      WORDPRESS_DB_HOST: $(WORDPRESS_DB_HOST)
+      MYSQL_ROOT_PASSWORD: $(MYSQL_ROOT_PASSWORD)
+      WORDPRESS_DB_NAME: $(WORDPRESS_DB_NAME)
+      WORDPRESS_DB_USER: $(WORDPRESS_DB_USER)
+      WORDPRESS_DB_PASSWORD: $(WORDPRESS_DB_PASSWORD)
+      WORDPRESS_TABLE_PREFIX: $(WORDPRESS_TABLE_PREFIX)
+    links:
+      - mariadb
+    restart: always
+  
+  
+  nginx:
+    build:
+      context: ./nginx
+  
+
+
+    
