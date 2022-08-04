@@ -1,33 +1,24 @@
 version: '3' #version de docker-compose
 
 services:
+
   mariadb:
     build:
-      context: ./mariadb #path to a directory containing a dockerfile
+      context: ./requirements/mariadb #path to a directory containing a dockerfile
     volumes:
-      -/home/cassassi/data/mariadb
-    environment: #.env
-      MYSQL_ROOT_PASSWORD: $(MYSQL_ROOT_PASSWORD)
-      MYSQL_DATABASE: $(MYSQL_DATABASE)
-      MYSQL_USER: $(MYSQL_USER)
-      MYSQL_PASSWORD: $(MYSQL_PASSWORD)
+      - db:/var/lib/mysql
+    env_file: .env
     restart: always #la norme pour un server web a priori
   
   
   wordpress:
     build:
-      context: ./wordpress
+      context: ./requirements/wordpress
     volumes:
-      - /home/cassassi/data/wordpress
+      - wp:/var/www/html
     depends_on:
       - mariadb
-    environment:
-      WORDPRESS_DB_HOST: $(WORDPRESS_DB_HOST)
-      MYSQL_ROOT_PASSWORD: $(MYSQL_ROOT_PASSWORD)
-      WORDPRESS_DB_NAME: $(WORDPRESS_DB_NAME)
-      WORDPRESS_DB_USER: $(WORDPRESS_DB_USER)
-      WORDPRESS_DB_PASSWORD: $(WORDPRESS_DB_PASSWORD)
-      WORDPRESS_TABLE_PREFIX: $(WORDPRESS_TABLE_PREFIX)
+    env_file: .env
     links:
       - mariadb
     restart: always
@@ -35,8 +26,20 @@ services:
   
   nginx:
     build:
-      context: ./nginx
-  
+      context: ./requirements/nginx
+    env_file: .env
+    restart: always
 
+volumes:
+  wp:
+    name: wp
+    driver_opts: 
+      device: ${WP_HOST_VOLUME_PATH}
+  db:
+    name: db
+    driver_opts: 
+      device: ${MARIADB_HOST_VOLUME_PATH}  
+
+    
 
     
