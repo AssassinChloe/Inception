@@ -14,19 +14,10 @@ NAME	= inception
 FILE	= srcs/docker-compose.yml
 DC		= docker-compose -f
 
-build :
-		$(DC) $(FILE) build $(NAME)
-up:
-		$(DC) $(FILE) up -d $(NAME)		
-start:
-		$(DC) $(FILE) start $(NAME)
-down:
-		$(DC) $(FILE) down $(NAME)
-destroy:
-		$(DC) $(FILE) down -v $(NAME)
-stop:
-		$(DC) $(FILE) stop $(NAME)
-restart: stop up build
+all: run
 
-.PHONY: build up start down destroy stop restart 
+run:
+		$(DC) $(FILE) up -d --build		
+
+.PHONY: run
 
