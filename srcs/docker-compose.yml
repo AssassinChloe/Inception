@@ -1,44 +1,65 @@
 version: '3' #version de docker-compose
 
-services:
+networks:
+  inception:
 
+services:
   mariadb:
+    env_file: .env
+    container_name: mariadb
     build:
       context: ./requirements/mariadb #path to a directory containing a dockerfile
     volumes:
       - db:/var/lib/mysql
-    env_file: .env
+    networks:
+      - inception
+    ports:
+      - "3306:3306"
     restart: always #la norme pour un server web a priori
   
   
   wordpress:
+    env_file: .env
+    container_name: wordpress
     build:
       context: ./requirements/wordpress
     volumes:
       - wp:/var/www/html
     depends_on:
       - mariadb
-    env_file: .env
-    links:
-      - mariadb
+    networks:
+      - inception
+    ports:
+      - "9000:9000"
     restart: always
   
   
   nginx:
+    env_file: .env
+    container_name: nginx
     build:
       context: ./requirements/nginx
-    env_file: .env
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    ports:
+      - "443:443"
     restart: always
 
 volumes:
   wp:
     name: wp
+    driver: local
     driver_opts: 
-      device: ${WP_HOST_VOLUME_PATH}
+      device: /hone/cassassi/data/wordpress
+      o: bind
   db:
     name: db
+    driver: local
     driver_opts: 
-      device: ${MARIADB_HOST_VOLUME_PATH}  
+      device: /home/cassassi/data/mariadb  
+      o: bind
 
     
 
