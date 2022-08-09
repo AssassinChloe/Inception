@@ -17,9 +17,13 @@ DC		= docker-compose -f
 all: run
 
 run:
-		mkdir /home/cassassi/data/wordpress
-		mkdir /home/cassassi/data/mariadb
 		$(DC) $(FILE) up -d --build		
 
-.PHONY: run
+stop:	
+		$(DC) $(FILE) stop
+
+start:
+		$(DC) $(FILE) start
+
+.PHONY: run stop start
 
