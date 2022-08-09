@@ -2,6 +2,7 @@ version: '3' #version de docker-compose
 
 networks:
   inception:
+    driver: bridge
 
 services:
   mariadb:
@@ -51,13 +52,15 @@ volumes:
   wp:
     name: wp
     driver: local
-    driver_opts: 
-      device: /hone/cassassi/data/wordpress
+    driver_opts:
+      type: none
+      device: /home/cassassi/data/wordpress
       o: bind
   db:
     name: db
     driver: local
-    driver_opts: 
+    driver_opts:
+      type: none
       device: /home/cassassi/data/mariadb  
       o: bind
 
