@@ -10,6 +10,10 @@
 #                                                                              #
 # **************************************************************************** #
 
+#!/bin/sh
+id [! -d /var/lib/mysql/${MYSQL_DATABASE}];
+echo "CREATE DATABASE wordpress;"| mysql -u root --skip-password
+echo "update mysql.user set plugin='' where user='root';"| mysql -u root --skip-password
 service mysql start
 mysql -u root --skip-password
 mysql -u root --skip-password

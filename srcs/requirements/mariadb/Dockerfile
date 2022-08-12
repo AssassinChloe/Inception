@@ -12,6 +12,9 @@
 
 FROM debian:buster
 RUN apt-get update && apt-get -y install mariadb-server mariadb-client
-
-ENTRYPOINT ./script.sh
-CMD ["mysqld", "--bind-address=0.0.0.0"]
+RUN mkdir -p /var/run/mysqld
+RUN chown -R mysql:root /run/mysqld && chown -R mysql:mysql /var/lib/mysql
+COPY conf/config.inc.php /etc/mysql/mariadb.conf.d/
+COPY conf/script.sh .
+EXPOSE 3306
+CMD bash script.sh

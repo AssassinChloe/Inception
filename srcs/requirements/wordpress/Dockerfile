@@ -19,5 +19,4 @@ RUN mv phpMyAdmin-5.1.0-english phpmyadmin
 RUN wget https://fr.wordpress.org/wordpress-6.0.1-fr_FR.tar.gz
 RUN tar -xf wordpress-6.0.1-fr_FR.tar.gz \
 && rm -rf wordpress-6.0.1-fr_FR.tar.gz
-# RUN mv wordpress-6.0.1-fr_FR wordpress
 COPY wp-config.php var/www/html/wordpress
