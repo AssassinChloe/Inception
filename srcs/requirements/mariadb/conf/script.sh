@@ -11,9 +11,22 @@
 # **************************************************************************** #
 
 #!/bin/sh
-id [! -d /var/lib/mysql/${MYSQL_DATABASE}];
-echo "CREATE DATABASE wordpress;"| mysql -u root --skip-password
-echo "update mysql.user set plugin='' where user='root';"| mysql -u root --skip-password
-service mysql start
-mysql -u root --skip-password
-mysql -u root --skip-password
+
+/usr/bin/mysql_install_db --user=root --basedir=/usr --datadir=/var/lib/mysql
+/usr/bin/mysqld --user=root --datadir=var/lib/mysql && sleep 2
+mysql -e "CREATE DATABASE IF NOT EXIST ${MYSQL_DATABASE};"
+
+mysql -e "CREATE USER '${ADMIN_USER}'@'%' IDENTIFIED BY '${ADMIN_PASSWORD}';"
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO '${ADMIN_USER}'@'%';"
+mysql -e "FLUSH PRIVILEGES;"
+
+mysql -e "CREATE USER '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+mysql -e "GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';"
+mysql -e "FLUSH PRIVILEGES;"
+
+mysql -e "DELETE FROM mysql.user WHERE user=''"
+mysql -e "DELETE FROM mysql.user WHERE user='root'"
+mysql -e "FLUSH PRIVILEGES;"
+
+pkill mysqld
+/usr/bin/mysqld --user=root --datadir=var/lib/mysql

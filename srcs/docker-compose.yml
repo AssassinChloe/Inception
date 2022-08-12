@@ -15,8 +15,8 @@ services:
     networks:
       - inception
     ports:
-      - "3306:3306"
-    restart: always #la norme pour un server web a priori
+      - 3306:3306
+    restart: on-failure
   
   
   wordpress:
@@ -25,14 +25,14 @@ services:
     build:
       context: ./requirements/wordpress
     volumes:
-      - wp:/var/www/html
+      - www:/var/www/html
     depends_on:
       - mariadb
     networks:
       - inception
     ports:
-      - "9000:9000"
-    restart: always
+      - 9000:9000
+    restart: on-failure
   
   
   nginx:
@@ -45,12 +45,12 @@ services:
     networks:
       - inception
     ports:
-      - "443:443"
-    restart: always
+      - 443:443
+    restart: on-failure
 
 volumes:
-  wp:
-    name: wp
+  www:
+    name: www
     driver: local
     driver_opts:
       type: none

@@ -15,6 +15,8 @@ FILE	= srcs/docker-compose.yml
 DC		= docker-compose -f
 
 all: run
+		mkdir -p /home/cassassi/data/mariadb
+		mkdir -p /home/cassassi/data/wp
 
 run:
 		$(DC) $(FILE) up -d --build		

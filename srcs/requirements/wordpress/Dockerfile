@@ -11,12 +11,17 @@
 # **************************************************************************** #
 
 FROM debian:buster
-RUN apt-get update &&apt-get -y install wget php7.3 php-mysql php-fpm php-xml
-WORKDIR var/www/html/
-RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.1.0/phpMyAdmin-5.1.0-english.tar.xz
-RUN tar -xf phpMyAdmin-5.1.0-english.tar.xz && rm -rf phpMyAdmin-5.1.0-english.tar.xz
-RUN mv phpMyAdmin-5.1.0-english phpmyadmin
-RUN wget https://fr.wordpress.org/wordpress-6.0.1-fr_FR.tar.gz
-RUN tar -xf wordpress-6.0.1-fr_FR.tar.gz \
-&& rm -rf wordpress-6.0.1-fr_FR.tar.gz
-COPY wp-config.php var/www/html/wordpress
+RUN apt-get update &&apt-get -y install wget php7.3 php-mysql php-fpm php-cgi
+
+COPY conf/www.conf /var/www/html/
+
+RUN mkdir /run/php
+
+COPY conf/script.sh /usr/local/bin/
+ENTRYPOINT ["/usr/local/bin/script.sh"]
+
+WORKDIR /var/www/html/
+
+EXPOSE 9000
+
+CMD ["/usr/sbin/php-fpm7.3", "-F"]

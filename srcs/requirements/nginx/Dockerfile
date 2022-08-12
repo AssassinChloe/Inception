@@ -11,11 +11,12 @@
 # **************************************************************************** #
 
 FROM debian:buster
-RUN apt-get update && apt-get -y install nginx openssl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get -y install nginx openssl
+RUN mkdir -p etc/ssl
 RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
--out /etc/ssl/cassassi.42.fr.pem \
+-subj "/C=FR/ST=IDF/L=Paris/O=42/OU=cassassi/CN=cassassi.42.fr" \
 -keyout /etc/ssl/cassassi.42.fr.key \
--subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=cassassi/CN=cassassi.42.fr"
-COPY conf/nginx.conf etc/nginx/conf.d
+-out /etc/ssl/cassassi.42.fr.crt
+COPY conf/default.conf etc/nginx/http.d/default.conf
 EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]

@@ -13,8 +13,11 @@
 FROM debian:buster
 RUN apt-get update && apt-get -y install mariadb-server mariadb-client
 RUN mkdir -p /var/run/mysqld
-RUN chown -R mysql:root /run/mysqld && chown -R mysql:mysql /var/lib/mysql
-COPY conf/config.inc.php /etc/mysql/mariadb.conf.d/
-COPY conf/script.sh .
+RUN chown -R mysql /var/lib/mysq
+RUN chmod 777 /var/lib/mysql
 EXPOSE 3306
-CMD bash script.sh
+COPY ./conf/script.sh .
+COPY ./conf/my.cnf etc/mysql/my.cnf
+COPY ./conf/my.cnf etc/my.cnf
+COPY ./conf/my.cnf ~/my.cnf
+ENTRYPOINT [script.sh]
