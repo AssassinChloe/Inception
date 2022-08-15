@@ -11,16 +11,23 @@
 # **************************************************************************** #
 
 #!/bin/sh
-mkdir -p /home/cassassi/data/mariadb
-mkdir -p /home/cassassi/data/wordpress
-/usr/bin/mysql_install_db --user=root --basedir=/usr --datadir=/var/lib/mysql
-/usr/bin/mysqld --user=root --datadir=/var/lib/mysql & sleep 2
+if [! -d /var/lib/mysql/${MYSQL_DATABASE} ]; then
+    mysqld&
+    until mysqladmin ping; do
+        sleep 2
+    done
 
+cd /root/
 mysql -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
+mysql -e "CREATE USER IF NOT EXISTS \`${ADMIN_USER}\`@'localhost' IDENTIFIED BY '${ADMIN_PASSWORD}';"
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO \`$ADMIN_USER}\`@'%' IDENTIFIED BY '${ADMIN_PASSWORD}';"
+mysql -e "FLUSH PRIVILEGES;"
+
 mysql -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}';"
 mysql -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
 mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
 mysql -e "FLUSH PRIVILEGES;"
+killall mysqld
 
-pkill mysqld
-/usr/bin/mysqld --user=root --datadir=/var/lib/mysql
+fi
+mysqld

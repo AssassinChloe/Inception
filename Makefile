@@ -17,6 +17,8 @@ DC		= docker-compose -f
 all: run
 
 run:
+		mkdir -p /home/cassassi/data/mariadb
+		mkdir -p /home/cassassi/data/wordpress
 		$(DC) $(FILE) up -d --build		
 
 stop:	

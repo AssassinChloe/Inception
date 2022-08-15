@@ -11,9 +11,13 @@
 # **************************************************************************** #
 
 FROM debian:buster
-RUN apt-get update &&apt-get -y install wget php7.3 php-mysql php-fpm php-cgi
-RUN rm -f etc/php7/php-fpm.d/www.conf
-COPY conf/www.conf etc/php7/php-fpm.d/www.conf
+RUN apt-get update &&apt-get -y install wget php7.3-fpm php7.3-common php7.3-mysql mariadb-client
+RUN mkdir -p /var/run && mkdir -p /run/php
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN chmod +x wp-cli.phar
+RUN mv -f wp-cli.phar /usr/local/bin/wp
+COPY conf/www.conf etc/php/7.3/fpm/pool.d/www.conf
+
 COPY conf/script.sh .
 EXPOSE 9000
 ENTRYPOINT ["./script.sh"]
