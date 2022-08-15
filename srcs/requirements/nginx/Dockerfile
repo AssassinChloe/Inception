@@ -18,5 +18,6 @@ RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
 -keyout /etc/ssl/cassassi.42.fr.key \
 -out /etc/ssl/cassassi.42.fr.crt
 COPY conf/default.conf etc/nginx/http.d/default.conf
+COPY conf/default.conf etc/nginx/sites-available/default
 EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]

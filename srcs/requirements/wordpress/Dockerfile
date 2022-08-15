@@ -12,11 +12,11 @@
 
 FROM debian:buster
 RUN apt-get update &&apt-get -y install wget php7.3 php-mysql php-fpm php-cgi
-COPY conf/www.conf/etc/php7/php-fpm.d/www.conf
+COPY conf/www.conf etc/php7/php-fpm.d/www.conf
 # RUN		mkdir 					-p /var/www/html
 # RUN		adduser 				-u 82 -D -S -G www-data www-data
 # RUN		chmod 777 				-R /var/www/html
 # RUN		chown 					-R www-data:www-data /var/www/html
 COPY conf/script.sh .
 EXPOSE 9000
-ENTRYPOINT ["script.sh"]
+ENTRYPOINT ["./script.sh"]
