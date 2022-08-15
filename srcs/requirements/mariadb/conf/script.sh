@@ -22,4 +22,4 @@ mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
 mysql -e "FLUSH PRIVILEGES;"
 
 pkill mysqld
-/usr/bin/mysqld --user=root --datadir=/var/lib/mysql
+service mysql start

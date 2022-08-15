@@ -20,4 +20,4 @@ COPY ./conf/script.sh .
 COPY ./conf/my.cnf etc/mysql/my.cnf
 COPY ./conf/my.cnf etc/my.cnf
 COPY ./conf/my.cnf ~/my.cnf
-ENTRYPOINT [script.sh]
+ENTRYPOINT  ["./script.sh"]
