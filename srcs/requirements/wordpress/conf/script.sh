@@ -1,25 +1,29 @@
 #!/bin/sh
+sleep 5
 
-if [ -f ./wordpress/wp-config.php ]
-then
-	echo "wordpress already downloaded"
-else
-	#Download wordpress
-	wget https://fr.wordpress.org/wordpress-6.0.1-fr_FR.tar.gz
-	tar -xzvf wordpress-6.0.1-fr_FR.tar.gz
-	rm -rf wordpress-6.0.1-fr_FR.tar.gz
+wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x wp-cli.phar
+mv -f wp-cli.phar /usr/local/bin/wp
+wp core download --allow-root --path="/var/www/html"
+rm -f /var/www/html/wp-config.php
+cp conf/wp-config.php /var/www/html/
 
-	#Update configuration file
-	rm -rf /etc/php/7.3/fpm/pool.d/www.conf
-	mv ./www.conf /etc/php/7.3/fpm/pool.d/
+wp	core install \
+					--allow-root \
+					--path="/var/www/html" \
+					--url=${SERVER_NAME} \
+					--title=${WP_TITLE} \
+					--admin_user=${ADMIN_USER} \
+					--admin_password=${ADMIN_PASSWORD} \
+					--admin_email=${ADMIN_EMAIL} \
+					--skip-email
 
-	#Inport env variables in the config file
-	cd /var/www/html/wordpress
-	sed -i "s/username_here/$MYSQL_USER/g" wp-config-sample.php
-	sed -i "s/password_here/$MYSQL_PASSWORD/g" wp-config-sample.php
-	sed -i "s/localhost/$MYSQL_HOSTNAME/g" wp-config-sample.php
-	sed -i "s/database_name_here/$MYSQL_DATABASE/g" wp-config-sample.php
-	mv wp-config-sample.php wp-config.php
-fi
+wp	user create \
+					--allow-root \
+					--path="/var/www/html" \
+					${MYSQL_USER} \
+					${MYSQL_EMAIL} \
+					--role=author \
+					--user_pass=${MYSQL_PASSWORD}
 
-exec "$@"
+exec	php-fpm7 -F

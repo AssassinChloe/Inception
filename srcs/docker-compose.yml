@@ -1,4 +1,4 @@
-version: '3' #version de docker-compose
+version: '3'
 
 networks:
   inception:
@@ -9,7 +9,7 @@ services:
     env_file: .env
     container_name: mariadb
     build:
-      context: ./requirements/mariadb #path to a directory containing a dockerfile
+      context: ./requirements/mariadb
     volumes:
       - db:/var/lib/mysql
     networks:
@@ -25,7 +25,7 @@ services:
     build:
       context: ./requirements/wordpress
     volumes:
-      - www:/var/www/html
+      - wp:/var/www/html
     depends_on:
       - mariadb
     networks:
@@ -49,8 +49,8 @@ services:
     restart: on-failure
 
 volumes:
-  www:
-    name: www
+  wp:
+    name: wp
     driver: local
     driver_opts:
       type: none
@@ -63,7 +63,3 @@ volumes:
       type: none
       device: /home/cassassi/data/mariadb  
       o: bind
-
-    
-
-    
