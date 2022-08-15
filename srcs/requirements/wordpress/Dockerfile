@@ -12,6 +12,7 @@
 
 FROM debian:buster
 RUN apt-get update &&apt-get -y install wget php7.3 php-mysql php-fpm php-cgi
+RUN rm -f etc/php7/php-fpm.d/www.conf
 COPY conf/www.conf etc/php7/php-fpm.d/www.conf
 COPY conf/script.sh .
 EXPOSE 9000

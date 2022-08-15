@@ -15,8 +15,6 @@ FILE	= srcs/docker-compose.yml
 DC		= docker-compose -f
 
 all: run
-		mkdir -p /home/cassassi/data/mariadb
-		mkdir -p /home/cassassi/data/wp
 
 run:
 		$(DC) $(FILE) up -d --build		
@@ -27,12 +25,6 @@ stop:
 start:
 		$(DC) $(FILE) start
 
-fclean:
-		docker stop $(docker ps -qa)
-		docker rm $(docker ps -qa)
-		docker rmi -f $(docker image -qa)
-		docker volume rm $(docker volume ls -q)
-		docker network rm $(docker network ls -q) 2>/dev/null
 
 .PHONY: run stop start
 

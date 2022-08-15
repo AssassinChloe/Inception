@@ -31,16 +31,16 @@ define( 'DB_USER', getenv("MYSQL_USER") );
 define( 'DB_PASSWORD', getenv("MYSQL_PASSWORD") );
 
 /** Adresse de l’hébergement MySQL. */
-define( 'DB_HOST', getenv("WP_DB_HOST"));
+define( 'DB_HOST', getenv("WP_DB_HOST"). ":3306");
 
 /** Jeu de caractères à utiliser par la base de données lors de la création des tables. */
-define( 'DB_CHARSET', 'utf8mb4' );
+define( 'DB_CHARSET', 'utf8' );
 
 /**
  * Type de collation de la base de données.
  * N’y touchez que si vous savez ce que vous faites.
  */
-define( 'DB_COLLATE', '' );
+define( 'DB_COLLATE', 'utf8_general_ci' );
 
 /**#@+
  * Clés uniques d’authentification et salage.
