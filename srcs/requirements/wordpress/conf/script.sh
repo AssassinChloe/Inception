@@ -4,11 +4,12 @@ sleep 5
 wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
 mv -f wp-cli.phar /usr/local/bin/wp
-wp core download --allow-root --path="/var/www/html"
+/usr/local/bin/wwp core download --allow-root --path="/var/www/html"
 rm -f /var/www/html/wp-config.php
+cp conf/wp-config.php /var/www/html/wordpress
 cp conf/wp-config.php /var/www/html/
 
-wp	core install \
+/usr/local/bin/wwp	core install \
 					--allow-root \
 					--path="/var/www/html" \
 					--url=${SERVER_NAME} \
@@ -18,7 +19,7 @@ wp	core install \
 					--admin_email=${ADMIN_EMAIL} \
 					--skip-email
 
-wp	user create \
+/usr/local/bin/wwp	user create \
 					--allow-root \
 					--path="/var/www/html" \
 					${MYSQL_USER} \
