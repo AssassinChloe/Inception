@@ -23,4 +23,4 @@ COPY ./conf/script.sh .
 COPY ./conf/my.cnf etc/mysql/mariadb.conf.d/my.cnf
 # COPY ./conf/my.cnf etc/my.cnf
 # COPY ./conf/my.cnf ~/my.cnf
-CMD bash script.sh
+CMD ["bash", "./script.sh"]
