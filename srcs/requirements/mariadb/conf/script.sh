@@ -1,16 +1,5 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    script.sh                                          :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: cassassi <cassassi@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/08/04 17:19:51 by cassassi          #+#    #+#              #
-#    Updated: 2022/08/16 11:27:42 by cassassi         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 #!/bin/sh
+
 if [ ! -d /var/lib/mysql/${MYSQL_DATABASE} ]; then
     mysqld&
     until mysqladmin ping; do
@@ -31,7 +20,6 @@ if [ ! -d /var/lib/mysql/${MYSQL_DATABASE} ]; then
     mysql -e "DELETE FROM mysql.user WHERE user=''"
     mysql -e "DELETE FROM mysql.user WHERE user='root'" .
     mysql -e "FLUSH PRIVILEGES;"
-    
     killall mysqld
 
 fi
