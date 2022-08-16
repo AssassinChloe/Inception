@@ -27,6 +27,15 @@ stop:
 start:
 		$(DC) $(FILE) start
 
+clean:
+		$(DC) $(FILE) down
+		docker rmi -f nginx wordpress mariadb
+		docker rm -f nginx wordpress mariadb
 
-.PHONY: run stop start
+fclean: clean
+		rm -rf /home/cassassi/data/wp_data
+		rm -rf /home/cassassi/data/db_data
+
+
+.PHONY: run stop start clean fclean
 

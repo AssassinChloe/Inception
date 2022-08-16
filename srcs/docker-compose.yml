@@ -1,69 +1,65 @@
 version: '3'
 
-networks:
-  inception:
-    driver: bridge
-
 services:
-  mariadb:
-    env_file: .env
-    container_name: mariadb
-    build:
-      context: ./requirements/mariadb
-    volumes:
-      - db:/var/lib/mysql
-    networks:
-      - inception
-    ports:
-      - 3306:3306
-    restart: on-failure
-  
-  
-  wordpress:
-    env_file: .env
-    container_name: wordpress
-    build:
-      context: ./requirements/wordpress
-    volumes:
-      - www:/var/www/html
-    depends_on:
-      - mariadb
-    working_dir: /var/www/html
-    networks:
-      - inception
-    ports:
-      - 9000:9000
-    restart: on-failure
-  
-  
   nginx:
-    env_file: .env
     container_name: nginx
-    build:
-      context: ./requirements/nginx
+    env_file: .env
+    build: requirements/nginx
     depends_on:
       - wordpress
+    image : nginx
     working_dir: /var/www/html
-    volumes:
-      - www:/var/www/html
-    networks:
-      - inception
     ports:
       - 443:443
+    volumes:
+      - wp:/var/www/html
+    networks:
+      - inception
+    restart: on-failure
+
+  mariadb:
+    container_name: mariadb
+    build: requirements/mariadb
+    image: mariadb
+    ports:
+      - 3306:3306
+    volumes:
+      - db:/var/lib/mysql
+    env_file: .env
+    networks:
+      - inception
+    restart: on-failure
+  
+  wordpress:
+    container_name: wordpress
+    build: requirements/wordpress
+    depends_on:
+      - mariadb
+    image: wordpress
+    working_dir: /var/www/html
+    ports:
+      - 9000:9000
+    volumes:
+      - wp:/var/www/html
+    env_file: .env
+    networks:
+      - inception
     restart: on-failure
 
 volumes:
-  www:
-    name: www
+  wp:
     driver: local
     driver_opts:
       type: none
       device: /home/cassassi/data/wordpress
       o: bind
   db:
-    name: db
     driver: local
     driver_opts:
       type: none
       device: /home/cassassi/data/mariadb  
       o: bind
+
+networks:
+  inception:
+    driver: bridge
