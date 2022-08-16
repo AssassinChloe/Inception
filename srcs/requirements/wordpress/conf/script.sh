@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ ! -f /var/www/html/wp-config.php]; then
+if [ ! -f /var/www/html/wp-config.php ]; then
 	until mysqladmin -h${WP_DB_HOST} -u${MYSQL_USER} -p${MYSQL_PASSWORD} ping; do
 		sleep 2
 	done
@@ -10,4 +10,4 @@ if [ ! -f /var/www/html/wp-config.php]; then
 
 fi
 
-php-fmp7.3 -F -R
+php-fpm7.3 -F -R
