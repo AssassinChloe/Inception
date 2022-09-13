@@ -1,6 +1,7 @@
 version: '3'
 
 services:
+
   nginx:
     container_name: nginx
     build: requirements/nginx
@@ -8,13 +9,12 @@ services:
       - wordpress
     image: nginx
     working_dir: /var/www/html
-    ports:
+    ports: 
       - 443:443
     volumes:
-      - wordpress_data:/var/www/html
-    env_file: .env
-    networks:
-      - inception
+      - wp_data:/var/www/html
+    networks: 
+      - inception_network
     restart: on-failure
 
   mariadb:
@@ -24,12 +24,13 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - mariadb_data:/var/lib/mysql
-    env_file: .env
+      - db_data:/var/lib/mysql
+    env_file:
+      - .env
     networks:
-      - inception
+      - inception_network
     restart: on-failure
-  
+
   wordpress:
     container_name: wordpress
     build: requirements/wordpress
@@ -40,26 +41,27 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - wordpress_data:/var/www/html
-    env_file: .env
+      - wp_data:/var/www/html
+    env_file:
+      - .env
     networks:
-      - inception
+      - inception_network
     restart: on-failure
 
 volumes:
-  wordpress_data:
+  wp_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/cassassi/data/wordpress_data
-      o: bind
-  mariadb_data:
+      device: /home/cassassi/data/wp_data
+      o: bind 
+  db_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/cassassi/data/mariadb_data
+      device: /home/cassassi/data/db_data
       o: bind
 
 networks:
-  inception:
+  inception_network:
     driver: bridge

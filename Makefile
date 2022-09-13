@@ -17,9 +17,9 @@ DC		= docker-compose -f
 all: run
 
 run:
-		mkdir -p /home/cassassi/data/mariadb_data
-		mkdir -p /home/cassassi/data/wordpress_data
-		sudo $(DC) $(FILE) up -d --build		
+		sudo mkdir -p /home/cassassi/data/db_data
+		sudo mkdir -p /home/cassassi/data/wp_data
+		@ cd srcs/ && sudo docker-compose up -d --build		
 
 stop:	
 		$(DC) $(FILE) stop
@@ -30,12 +30,12 @@ start:
 clean:
 		$(DC) $(FILE) down
 		docker rmi -f nginx wordpress mariadb
-		docker rm -f nginx wordpress mariadb
 
 fclean: clean
-		sudo rm -rf /home/cassassi/data/mariadb_data
-		sudo rm -rf /home/cassassi/data/wordpress_data
+		sudo rm -rf /home/cassassi/data/db_data
+		sudo rm -rf /home/cassassi/data/wp_data
 
+re:		fclean all
 
-.PHONY: run stop start clean fclean
+.PHONY: run stop start clean fclean re
 
