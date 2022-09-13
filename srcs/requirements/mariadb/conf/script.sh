@@ -9,8 +9,8 @@ if [ ! -d /var/lib/mysql/${MYSQL_DATABASE} ]; then
     cd /root/
     mysql -e "CREATE DATABASE ${MYSQL_DATABASE};"
     
-    mysql -e "CREATE USER '${ADMIN_USER}'@'%' IDENTIFIED BY '${ADMIN_PASSWORD}';"
-    mysql -e "GRANT ALL PRIVILEGES ON *.* TO '${ADMIN_USER}'@'%';"
+    mysql -e "CREATE USER '${MYSQL_ADMIN_USER}'@'%' IDENTIFIED BY '${MYSQL_ADMIN_PASSWORD}';"
+    mysql -e "GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ADMIN_USER}'@'%';"
     mysql -e "FLUSH PRIVILEGES;"
     
     mysql -e "CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"

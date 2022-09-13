@@ -11,7 +11,7 @@ services:
     ports:
       - 443:443
     volumes:
-      - wp:/var/www/html
+      - wordpress_data:/var/www/html
     env_file: .env
     networks:
       - inception
@@ -24,7 +24,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - db:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     env_file: .env
     networks:
       - inception
@@ -40,24 +40,24 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - wp:/var/www/html
+      - wordpress_data:/var/www/html
     env_file: .env
     networks:
       - inception
     restart: on-failure
 
 volumes:
-  wp:
+  wordpress_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/cassassi/data/wordpress
+      device: /home/cassassi/data/wordpress_data
       o: bind
-  db:
+  mariadb_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/cassassi/data/mariadb  
+      device: /home/cassassi/data/mariadb_data
       o: bind
 
 networks:

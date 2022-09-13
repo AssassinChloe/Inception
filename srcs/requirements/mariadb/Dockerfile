@@ -1,7 +1,8 @@
 FROM debian:buster
 
 RUN apt-get update && \
-    apt-get -y install mariadb-server mariadb-client
+    apt-get -y install mariadb-server \
+    mariadb-client
 
 RUN mkdir -p /var/run/mysqld
 
