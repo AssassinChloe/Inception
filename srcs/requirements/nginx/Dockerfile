@@ -13,7 +13,8 @@
 FROM debian:buster 
 
 RUN apt-get update && \
-    apt-get -y install nginx openssl
+    apt-get -y install nginx \
+    openssl
 
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/ssl/private/cassassi.42.fr.key \

@@ -9,6 +9,7 @@ RUN mkdir -p /var/run/mysqld
 RUN chown -R mysql:root /run/mysqld && chown -R mysql:mysql /var/lib/mysql
 
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+
 COPY ./conf/script.sh .
 
 EXPOSE 3306

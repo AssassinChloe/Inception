@@ -14,7 +14,10 @@ FROM debian:buster
 
 RUN apt-get update && \
     apt-get -y install php7.3-fpm \
-    php7.3-common php7.3-mysql curl mariadb-client
+    php7.3-common \
+    php7.3-mysql \
+    mariadb-client \
+    curl
 
 RUN mkdir -p /var/run/ && mkdir -p /run/php/
 
