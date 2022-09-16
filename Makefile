@@ -6,7 +6,7 @@
 #    By: cassassi <cassassi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/04 17:20:20 by cassassi          #+#    #+#              #
-#    Updated: 2022/08/15 13:52:26 by cassassi         ###   ########.fr        #
+#    Updated: 2022/09/16 13:27:54 by cassassi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,14 +28,13 @@ start:
 		$(DC) $(FILE) start
 
 clean:
-		$(DC) $(FILE) down
+		$(DC) $(FILE) down -v
 		docker rmi -f nginx wordpress mariadb
 
 fclean: clean
 		sudo rm -rf /home/cassassi/data/db_data
 		sudo rm -rf /home/cassassi/data/wp_data
 
-re:		fclean all
+re:		clean all
 
 .PHONY: run stop start clean fclean re
-
