@@ -19,7 +19,7 @@ all: run
 run:
 		sudo mkdir -p /home/cassassi/data/db_data
 		sudo mkdir -p /home/cassassi/data/wp_data
-		@ cd srcs/ && sudo docker-compose up -d --build		
+		$(DC) $(FILE) up -d --build		
 
 stop:	
 		$(DC) $(FILE) stop
